@@ -24,12 +24,12 @@
 ##DELETE  /api/threads/:id/comment/:id
 ##DELETE  /api/threads/:id/comment/:id
 
-##GET       /api/timelines
+GET       /api/timelines                            controllers.PostsController.getTimelines
 ##GET     /api/users/:id/timelines
-##POST      /api/timelines
-##GET     /api/timelines/:id
-##PUT       /api/timelines/:id
-##DELETE    /api/timelines/:id
+POST      /api/timelines                            controllers.PostsController.add
+GET       /api/timelines/:id                        controllers.PostsController.getDetailResult(id: Int)
+PUT       /api/timelines/:id                        controllers.PostsController.update(id: Int)
+DELETE    /api/timelines/:id                        controllers.PostsController.delete(id: Int)
 
 ##GET     /api/timelines/:id/comments
 ##POST    /api/timeline/comment
@@ -41,11 +41,11 @@
 ##PUT     /api/timelines/:id/comment/:id/comment/:id
 ##DELETE  /api/timelines/:id/comment/:id/comment/:id
 
-##GET     /api/thread
+GET       /api/threads                              controllers.PostsController.getThreads
 ##GET     /api/users/:id/threads
-##POST    /api/threads/:id
-##PUT     /api/threads/:id
-##DELETE  /api/threads/:id
+POST      /api/threads/                             controllers.PostsController.add
+PUT       /api/threads/:id                          controllers.PostsController.update(id: Int)
+DELETE    /api/threads/:id                          controllers.PostsController.delete(id: Int)
 
 ##GET     /api/thread/:id/comments
 ##POST    /api/thread/comments

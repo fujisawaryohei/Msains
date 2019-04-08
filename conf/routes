@@ -1,0 +1,58 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+##POST    /api/users/signup
+##POST    /api/users/signin
+##PUT     /api/users/:id
+##DELETE  /api/users/:id
+##GET     /api/users/:id
+##GET     /api/users/ramdon/:id
+
+##GET     /api/users/:id/followings
+##GET     /api/users/:id/followers
+##POST    /api/users/:id/following
+##DELETE  /api/users/:id/following
+
+##GET     /api/timelines/:id/likes
+##GET     /api/thread/:id/likes
+##POST    /api/timelines/:id/comment/:id
+##POST    /api/timelines/:id/comment/:id
+##GET     /api/timelines/:id/comment/:id/likes
+##GET     /api/threads/:id/comment/:id/likes
+##PUT     /api/timelines/:id/comment/:id
+##PUT     /api/threads/:id/comment/:id
+##DELETE  /api/threads/:id/comment/:id
+##DELETE  /api/threads/:id/comment/:id
+
+##GET       /api/timelines
+##GET     /api/users/:id/timelines
+##POST      /api/timelines
+##GET     /api/timelines/:id
+##PUT       /api/timelines/:id
+##DELETE    /api/timelines/:id
+
+##GET     /api/timelines/:id/comments
+##POST    /api/timeline/comment
+##PUT     /api/timelines/:id/comment/:id
+##DELETE  /api/timelines/:id/comment/:id
+
+##GET     /api/timelines/:id/comment/:id/comments
+##POST    /api/timelines/:id/comment/:id/comment
+##PUT     /api/timelines/:id/comment/:id/comment/:id
+##DELETE  /api/timelines/:id/comment/:id/comment/:id
+
+##GET     /api/thread
+##GET     /api/users/:id/threads
+##POST    /api/threads/:id
+##PUT     /api/threads/:id
+##DELETE  /api/threads/:id
+
+##GET     /api/thread/:id/comments
+##POST    /api/thread/comments
+##PUT     /api/thread/:id/comment/:id
+##DELETE  /api/thread/:id/comment/:id
+
+##GET     /api/users/:id/schedules
+##POST    /api/schedules
+##PUT     /api/schedule/:id
+##DELETE  /api/schedule/:id

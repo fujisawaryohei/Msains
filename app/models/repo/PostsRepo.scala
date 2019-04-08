@@ -16,6 +16,30 @@ class PostsRepo @Inject() (
   import dbConfig._
   import profile.api._
 
+  private val query = TableQuery[PostsTable]
+
+  def getThreads: Future[Seq[Post]] =
+    db.run(query.filter(_.postType === "Thread").result)
+
+  def getTimelines: Future[Seq[Post]] =
+    db.run(query.filter(_.postType === "Timeline").result)
+
+  def getDetailsResult(id: Int): Future[Post] =
+    db.run(query.filter(_.id === id).result.head)
+
+  def add(post: Post): Future[Int] =
+    db.run(query += post)
+
+  def update(userID: UUID, id: Int, params: (String, String, String)): Future[Int] = db.run {
+    query
+      .filter(r => r.userID === userID && r.id === id)
+      .map(r => (r.title, r.content, r.imageURL))
+      .update(params)
+  }
+
+  def delete(userID: UUID, id: Int): Future[Int] =
+    db.run(query.filter(r => r.userID === userID && r.id === id).delete)
+
   class PostsTable(tag: Tag) extends Table[Post](tag,"POSTS") {
     def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
     def userID = column[UUID]("USER_ID")

@@ -24,7 +24,13 @@ class PostsRepo @Inject() (
   def getTimelines: Future[Seq[Post]] =
     db.run(query.filter(_.postType === "Timeline").result)
 
-  def getDetailsResult(id: Int): Future[Post] =
+  def getUserTimelines(user_id: UUID): Future[Seq[Post]] =
+    db.run(query.filter(_.userID === user_id).filter(_.postType === "Timeline").result)
+
+  def getUserThreads(user_id: UUID): Future[Seq[Post]] =
+    db.run(query.filter(_.userID === user_id).filter(_.postType === "Threads").result)
+
+  def getDetailResult(id: Int): Future[Post] =
     db.run(query.filter(_.id === id).result.head)
 
   def add(post: Post): Future[Int] =

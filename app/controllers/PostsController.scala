@@ -1,6 +1,7 @@
 package controllers
 
 import javax.inject.{ Inject, Singleton }
+import java.util.UUID
 import scala.concurrent.{ ExecutionContext, Future }
 import play.api.mvc._
 import play.api.data.Form
@@ -36,12 +37,20 @@ class PostsController @Inject()(
     postsRepo.getThreads.map(threads => Ok(Json.toJson(threads)))
   }
 
+  def getUserThreads(user_id: UUID) = Action.async {
+    postsRepo.getUserThreads(user_id).map(userThreads => Ok(Json.toJson(userThreads)))
+  }
+
   def getTimelines = Action.async {
     postsRepo.getThreads.map(timelines => Ok(Json.toJson(timelines)))
   }
 
+  def getUserTimelines(user_id: UUID) = Action.async {
+    postsRepo.getUserTimelines(user_id).map(userTimelines => Ok(Json.toJson(userTimelines)))
+  }
+
   def getDetailResult(post_id: Int) = Action.async {
-    postsRepo.getDetailsResult(post_id).map(result => Ok(Json.toJson(result)))
+    postsRepo.getDetailResult(post_id).map(result => Ok(Json.toJson(result)))
   }
 
   def add = userAction.async { implicit request =>

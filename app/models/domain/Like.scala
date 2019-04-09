@@ -1,7 +1,9 @@
 package models.domain
 
-case class CommentReply(
+case class Like (
     id: Int,
+    userID: java.util.UUID,
+    postID: Int,
     commentID: Int,
-    content: String,
+    commentReplyID: Int,
     createdAt: java.time.Instant)

@@ -5,5 +5,4 @@ case class Comment(
     userID: java.util.UUID,
     postID: Int,
     content: String,
-    likeFlag: Boolean,
     createdAt: java.time.Instant)

@@ -25,7 +25,7 @@
 ##DELETE  /api/threads/:id/comment/:id
 
 GET       /api/timelines                controllers.PostsController.getTimelines
-##GET     /api/users/:id/timelines      controllers.PostsController.getUserTimelines(id: java.util.UUID)
+GET     /api/users/:id/timelines      controllers.PostsController.getUserTimelines(id: java.util.UUID)
 POST      /api/timelines                controllers.PostsController.add
 GET       /api/timelines/:id            controllers.PostsController.getDetailResult(id: Int)
 PUT       /api/timelines/:id            controllers.PostsController.update(id: Int)

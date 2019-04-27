@@ -1,8 +1,9 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-##POST    /api/users/signup
-##POST    /api/users/signin
+POST    /api/users/signup                      controllers.AuthenticationController.signUp
+POST    /api/users/signin                      controllers.AuthenticationController.signIn
+POST    /api/users/signout                     controllers.AuthenticationController.signOut
 ##PUT     /api/users/:id
 ##DELETE  /api/users/:id
 ##GET     /api/users/:id

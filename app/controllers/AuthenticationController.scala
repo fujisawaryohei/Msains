@@ -6,8 +6,9 @@ import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.json.Json
-import models.domain.Post
+import models.domain.User
 import utils.UserRequest
+import scala.util.matching.Regex
 
 @Singleton
 class AuthenticationController @Inject()(
@@ -23,6 +24,25 @@ class AuthenticationController @Inject()(
     "code" -> optional(nonEmptyText)
   ))
 
+  val userParamMapping = tuple(
+    "hashedPassword" -> nonEmptyText(minLength=6,maxLength=20),
+    "firstName" -> nonEmptyText(minLength=1,maxLength=10),
+    "lastName" -> nonEmptyText(minLength=1,maxLength=10),
+    "birthday" -> sqlDate,
+    "major" -> nonEmptyText,
+    "year" -> number(min=1,max=4))
+
+  val signUpForm = Form(tuple(
+    "params" -> userParamMapping,
+    "email" -> text.verifying(
+      "your address can't use..",
+      t =>  {
+        val mail = "@seinan-gakuin.jp".r
+        if(mail.findFirstIn(t).nonEmpty) true else false
+      }
+    )
+  ))
+
   def signIn = Action.async { implicit request =>
     signInForm.bindFromRequest.fold(
       error =>
@@ -35,6 +55,19 @@ class AuthenticationController @Inject()(
             } else Unauthorized
           case None => Unauthorized
         }
+      })
+  }
+
+  def signUp = Action.async { implicit request =>
+    signUpForm.bindFromRequest.fold(
+      error =>
+        Future.successful(BadRequest(error.errorsAsJson)),
+      { case (params,email) =>
+        usersRepo
+          .insert(User.fromForm(params,email))
+          .map { n =>
+            if (n == 1) Ok else InternalServerError
+          }
       })
   }
 

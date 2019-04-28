@@ -48,7 +48,7 @@ class UsersRepo @Inject() (
       birthday,
       major,
       year,
-      profile.?, //Optionを表現する？
+      profile.?,
       adminFlag) <> (User.tupled, User.unapply)
 
     def idxEmail = index("IDX_EMAIL", email.toUpperCase, unique = true)

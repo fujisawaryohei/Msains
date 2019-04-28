@@ -48,7 +48,7 @@ object User {
           None,
           params._2,
           params._3,
-          params._4, //birthday
+          params._4,
           params._5,
           params._6,
           None,

@@ -18,12 +18,6 @@ class AuthenticationController @Inject()(
   extends AbstractController(components)
   with play.api.i18n.I18nSupport {
 
-  val signInForm = Form(tuple(
-    "email" -> email,
-    "password" -> nonEmptyText,
-    "code" -> optional(nonEmptyText)
-  ))
-
   val userParamMapping = tuple(
     "hashedPassword" -> nonEmptyText(minLength=6,maxLength=20),
     "firstName" -> nonEmptyText(minLength=1,maxLength=10),
@@ -37,10 +31,16 @@ class AuthenticationController @Inject()(
     "email" -> text.verifying(
       "your address can't use..",
       t =>  {
-        val mail = "@seinan-gakuin.jp".r
-        if(mail.findFirstIn(t).nonEmpty) true else false
+        val mailPattern = "@seinan-gakuin.jp".r
+        if(mailPattern.findFirstIn(t).nonEmpty) true else false
       }
     )
+  ))
+
+  val signInForm = Form(tuple(
+    "email" -> email,
+    "password" -> nonEmptyText,
+    "code" -> optional(nonEmptyText)
   ))
 
   def signIn = Action.async { implicit request =>

@@ -64,7 +64,7 @@ class AuthenticationController @Inject()(
         Future.successful(BadRequest(error.errorsAsJson)),
       { case (params,email) =>
         usersRepo
-          .insert(User.fromForm(params,email))
+          .insert(User.fromSignInForm(params,email))
           .map { n =>
             if (n == 1) Ok else InternalServerError
           }

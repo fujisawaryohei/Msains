@@ -4,7 +4,7 @@
 POST    /api/users/signup                      controllers.AuthenticationController.signUp
 POST    /api/users/signin                      controllers.AuthenticationController.signIn
 POST    /api/users/signout                     controllers.AuthenticationController.signOut
-##PUT     /api/users/:id
+PUT     /api/users/:id                         controllers.UsersController.editInfo(id: java.util.UUID)
 ##DELETE  /api/users/:id
 ##GET     /api/users/:id
 ##GET     /api/users/ramdon/:id

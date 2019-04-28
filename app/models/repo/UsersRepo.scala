@@ -17,13 +17,21 @@ class UsersRepo @Inject() (
 
   val query = TableQuery[UsersTable]
 
-  def findByID(id: UUID): Future[Option[User]] =
-    db.run(query.filter(_.id === id).result.headOption)
+  def findByID(user_id: UUID): Future[Option[User]] =
+    db.run(query.filter(_.id === user_id).result.headOption)
 
   def findByEmail(email: String): Future[Option[User]] =
     db.run(query.filter(_.email.toUpperCase === email.toUpperCase).result.headOption)
 
-  def insert(user: User): Future[Int] = db.run( query += user)
+  def insert(user: User): Future[Int] = db.run(query += user)
+
+  def update(user_id: UUID, params: (String, String, String)): Future[Int] =
+  db.run {
+    query
+      .filter(r => r.id === user_id)
+      .map(r => (r.hashedPassword, r.profile, r.email))
+      .update(params)
+  }
 
   class UsersTable(tag: Tag) extends Table[User](tag,"USERS") {
     def id = column[UUID]("ID", O.PrimaryKey)

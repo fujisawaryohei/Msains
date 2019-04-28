@@ -38,10 +38,10 @@ case class User(
 object User {
   val tupled = (apply _).tupled
 
-  def fromForm(
+  def fromSignInForm(
       params: (String, String, String, java.sql.Date, String, Int),
-      email: String
-      ) = apply(
+      email: String ): User
+      = apply(
           UUID.randomUUID(),
           email,
           PasswordHasher.generate(params._1),
@@ -52,6 +52,5 @@ object User {
           params._5,
           params._6,
           None,
-          false
-        )
+          false)
 }

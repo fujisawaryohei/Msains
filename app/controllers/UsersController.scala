@@ -22,12 +22,16 @@ class UsersController @Inject()(
     val editParamMapping = tuple(
       "hashedPassword" -> nonEmptyText(minLength=6,maxLength=20),
       "profile" -> nonEmptyText(minLength=1,maxLength=255),
-      "email" -> text.verifying("your address can't use..",
+      "email" -> text.verifying("This address can't register at this service.",
                    t => { val mailPattern = "@seinan-gakuin.jp".r
                    if(mailPattern.findFirstIn(t).nonEmpty) true else false }),
     )
 
     val editForm = Form(editParamMapping)
+
+    def userDetailInfo(user_id: java.util.UUID) = Action.async{ implicit request =>
+      usersRepo.userDetailInfo(user_id).map(info => Ok(Json.toJson(info)))
+    }
 
     def editInfo(user_id: java.util.UUID) = userAction.async{ implicit request =>
       editForm.bindFromRequest.fold(

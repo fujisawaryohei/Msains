@@ -3,6 +3,9 @@ package models.domain
 import ejisan.kuro.otp._
 import utils.PasswordHasher
 import java.util.UUID
+import play.api.libs.json.Json
+import play.api.libs.json.JsValue
+import play.api.libs.json.Writes
 
 case class User(
     id: java.util.UUID,
@@ -37,6 +40,8 @@ case class User(
 
 object User {
   val tupled = (apply _).tupled
+
+  implicit val writes: Writes[User] = Json.writes[User]
 
   def fromForm(
       params: (String, String, String, java.sql.Date, String, Int),

@@ -33,6 +33,9 @@ class UsersRepo @Inject() (
         .update(params)
     }
 
+  def userDetailInfo(user_id: UUID) :Future[User] =
+    db.run(query.filter(_.id === user_id).result.head)
+
   class UsersTable(tag: Tag) extends Table[User](tag,"USERS") {
     def id = column[UUID]("ID", O.PrimaryKey)
     def email = column[String]("EMAIL")

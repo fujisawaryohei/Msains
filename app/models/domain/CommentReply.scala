@@ -1,7 +1,7 @@
 package models.domain
 
 case class CommentReply(
-    id: Int,
     commentID: Int,
     content: String,
+    likeFlag: Boolean,
     createdAt: java.time.Instant)

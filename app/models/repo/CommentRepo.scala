@@ -22,6 +22,7 @@ class CommentRepo @Inject() (
     def userID = column[UUID]("USER_ID")
     def postID = column[Int]("POST_ID")
     def content = column[String]("CONTENT")
+    def likeFlag = column[Boolean]("LIKE_FLAG")
     def createdAt = column[Instant]("CREATED_AT")
 
     def * = (
@@ -29,6 +30,7 @@ class CommentRepo @Inject() (
       userID,
       postID,
       content,
+      likeFlag,
       createdAt) <> (Comment.tupled, Comment.unapply)
 
     def user = foreignKey("USERS_FK", userID, TableQuery[usersRepo.UsersTable])(

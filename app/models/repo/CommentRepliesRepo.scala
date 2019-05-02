@@ -17,15 +17,15 @@ class CommentRepliesRepo @Inject() (
   import profile.api._
 
   class CommentRepliesTable(tag: Tag) extends Table[CommentReply](tag,"COMMENT_REPLIES") {
-    def id = column[Int]("COMMENTREPLIY_ID", O.PrimaryKey)
     def commentID = column[Int]("COMMENT_ID", O.PrimaryKey)
     def content = column[String]("CONTENT")
+    def likeFlag = column[Boolean]("LIKE_FLAG")
     def createdAt = column[Instant]("CREATED_AT")
 
     def * = (
-      id,
       commentID,
       content,
+      likeFlag,
       createdAt) <> (CommentReply.tupled, CommentReply.unapply)
 
     def comment = foreignKey("COMMETS_FK", commentID, TableQuery[commetsRepo.CommentTable])(

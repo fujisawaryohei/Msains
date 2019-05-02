@@ -5,6 +5,7 @@ import java.time.Instant
 import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ Future, ExecutionContext }
 import models.domain.User
+import slick.driver.H2Driver.api._
 
 @Singleton
 class UsersRepo @Inject() (
@@ -35,6 +36,12 @@ class UsersRepo @Inject() (
 
   def userDetailInfo(user_id: UUID) :Future[User] =
     db.run(query.filter(_.id === user_id).result.head)
+
+  def random: Future[Seq[(String, String, String, Int)]] =
+    db.run {
+      sql"""SELECT FIRST_NAME, LAST_NAME, MAJOR, YEAR FROM User ORDER BY RAND() LIMIT 1"""
+      .as[(String, String, String, Int)]
+    }
 
   class UsersTable(tag: Tag) extends Table[User](tag,"USERS") {
     def id = column[UUID]("ID", O.PrimaryKey)

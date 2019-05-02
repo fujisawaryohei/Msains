@@ -43,5 +43,9 @@ class UsersController @Inject()(
         }
       )
     }
+
+    def random = Action.async{ implicit request =>
+      usersRepo.random.map(result => Ok(Json.toJson(result)))
+    }
   }
 

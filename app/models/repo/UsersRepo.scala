@@ -25,6 +25,14 @@ class UsersRepo @Inject() (
 
   def insert(user: User): Future[Int] = db.run( query += user)
 
+  def update(user_id: UUID, params: (String, String, String)): Future[Int] =
+    db.run {
+      query
+        .filter(r => r.id === user_id)
+        .map(r => (r.hashedPassword, r.profile, r.email))
+        .update(params)
+    }
+
   class UsersTable(tag: Tag) extends Table[User](tag,"USERS") {
     def id = column[UUID]("ID", O.PrimaryKey)
     def email = column[String]("EMAIL")

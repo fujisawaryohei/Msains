@@ -39,7 +39,7 @@ class PostsRepo @Inject() (
   def update(userID: UUID, id: Int, params: (String, String, String)): Future[Int] = db.run {
     query
       .filter(r => r.userID === userID && r.id === id)
-      .map(r => (r.title, r.content, r.imageURL))
+      .map(r => (r.title, r.content, r.filename))
       .update(params)
   }
 
@@ -51,7 +51,7 @@ class PostsRepo @Inject() (
     def userID = column[UUID]("USER_ID")
     def title = column[String]("TITLE")
     def content = column[String]("CONTENT")
-    def imageURL = column[String]("IMAGE_URL")
+    def filename = column[String]("FILENAME")
     def postType = column[String]("TYPE")
     def createdAt = column[Instant]("CREATED_AT")
 
@@ -60,7 +60,7 @@ class PostsRepo @Inject() (
         userID,
         title,
         content,
-        imageURL,
+        filename,
         postType,
         createdAt) <> (Post.tupled, Post.unapply)
 

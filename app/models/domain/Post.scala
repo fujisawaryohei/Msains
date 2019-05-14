@@ -11,7 +11,7 @@ case class Post(
     userID: UUID,
     title: String,
     content: String,
-    imageURL: String,
+    filename: String,
     postType: String,
     createdAt: Instant)
 

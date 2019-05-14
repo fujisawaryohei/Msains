@@ -9,6 +9,7 @@ import play.api.data.Forms._
 import play.api.libs.json.Json
 import models.domain.Post
 import utils.UserRequest
+import java.io.File
 
 @Singleton
 class PostsController @Inject()(
@@ -22,7 +23,7 @@ class PostsController @Inject()(
   val postParamMapping = tuple(
     "title" -> nonEmptyText(maxLength = 10),
     "content" -> nonEmptyText(maxLength = 255),
-    "image_url" -> nonEmptyText(maxLength = 255))
+    "filename" -> text)
 
   val postAddtionForm = Form(tuple(
     "params" -> postParamMapping,
@@ -53,7 +54,7 @@ class PostsController @Inject()(
     postsRepo.getDetailResult(post_id).map(result => Ok(Json.toJson(result)))
   }
 
-  def add = userAction.async { implicit request =>
+  def add = userAction(parse.multipartFormData).async { implicit request =>
     postAddtionForm.bindFromRequest.fold(
       error =>
         Future.successful(BadRequest(error.errorsAsJson)),
@@ -61,7 +62,17 @@ class PostsController @Inject()(
         postsRepo
           .add(Post.fromForm(request.userID, params, postType))
           .map { n =>
-            if (n == 1) Ok else InternalServerError
+            if (n == 1){
+              request.body.file("image").map{ image =>
+                val filename = image.filename
+                image.ref.copyTo(new File(s"/public/images/Post-images/${filename}"))
+                Ok("file upload...")
+              }.getOrElse {
+                BadRequest("can't upload")
+              }
+            } else{
+              InternalServerError
+            }
           }
       })
   }

@@ -8,7 +8,7 @@ import models.domain.Comment
 
 @Singleton
 class CommentRepliesRepo @Inject() (
-    val commetsRepo: CommentRepo,
+    val commetsRepo: CommentsRepo,
     dbConfigProvider: play.api.db.slick.DatabaseConfigProvider)(
     implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[slick.jdbc.JdbcProfile]
@@ -28,7 +28,7 @@ class CommentRepliesRepo @Inject() (
       likeFlag,
       createdAt) <> (CommentReply.tupled, CommentReply.unapply)
 
-    def comment = foreignKey("COMMETS_FK", commentID, TableQuery[commetsRepo.CommentTable])(
+    def comment = foreignKey("COMMETS_FK", commentID, TableQuery[commetsRepo.CommentsTable])(
       _.id,
       onUpdate = ForeignKeyAction.Cascade,
       onDelete = ForeignKeyAction.Cascade)

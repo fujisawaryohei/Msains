@@ -19,19 +19,19 @@ class CommentsRepo @Inject() (
 
   private val query = TableQuery[CommentsTable]
 
-  def getTimelineComment(post_id: Int): Future[Seq[Comment]] = db.run {
+  def getComments(post_id: Int): Future[Seq[Comment]] = db.run {
     query.filter(_.id === post_id).result
   }
 
-  def createTimelineComment(comment: Comment): Future[Int] = db.run(query += comment)
+  def createComment(comment: Comment): Future[Int] = db.run(query += comment)
 
-  def updateTimelineComment(comment_id: Int, content: (UUID, Int, String)): Future[Int] = db.run {
+  def updateComment(comment_id: Int, content: (UUID, Int, String)): Future[Int] = db.run {
     query.filter(_.id === comment_id)
          .map(r => (r.userID, r.postID, r.content))
          .update(content)
   }
 
-  def deleteTimelineComment(comment_id: Int): Future[Int] = db.run {
+  def deleteComment(comment_id: Int): Future[Int] = db.run {
     query.filter(_.id === comment_id).delete
   }
 

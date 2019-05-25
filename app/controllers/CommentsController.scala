@@ -34,14 +34,14 @@ class CommentsController @Inject()(
     val commentUpdateParamsMapping = Form(commentParamstuple)
 
     def getComments(post_id: Int) = Action.async {
-      commentsRepo.getTimelineComment(post_id).map(n => Ok(Json.toJson(n)))
+      commentsRepo.getComments(post_id).map(n => Ok(Json.toJson(n)))
     }
 
     def commentCreate = userAction.async { implicit request =>
       commentParamsMapping.bindFromRequest.fold(
         error => Future.successful(BadRequest(error.errorsAsJson)),
         { case (params) =>
-          commentsRepo.createTimelineComment(Comment.fromForm(params))
+          commentsRepo.createComment(Comment.fromForm(params))
           .map(n => if(n == 1) Ok else InternalServerError)
         }
       )
@@ -51,13 +51,13 @@ class CommentsController @Inject()(
       commentUpdateParamsMapping.bindFromRequest.fold(
         error => Future.successful(BadRequest(error.errorsAsJson)),
         { case (contentParam) =>
-          commentsRepo.updateTimelineComment(comment_id, contentParam)
+          commentsRepo.updateComment(comment_id, contentParam)
           .map(n => if(n == 1) Ok else InternalServerError)
         }
       )
     }
 
     def commentDelete(comment_id: Int) = userAction.async {
-      commentsRepo.deleteTimelineComment(comment_id).map(n => if(n == 1) Ok else InternalServerError)
+      commentsRepo.deleteComment(comment_id).map(n => if(n == 1) Ok else InternalServerError)
     }
   }

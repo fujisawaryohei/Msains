@@ -14,9 +14,11 @@
 ##DELETE  /api/users/:id/following
 
 ##GET     /api/posts/:id/likes
-##POST    /api/posts/:id/comment/:id
+##POST    /api/posts/:id/like
+##DELETE  /api/posts/:id/likes
+
 ##GET     /api/posts/:id/comment/:id/likes
-##PUT     /api/posts/:id/comment/:id
+##POST    /api/posts/:id/comment/:id/like
 ##DELETE  /api/posts/:id/comment/:id
 
 GET       /api/timelines            controllers.PostsController.getTimelines
@@ -29,14 +31,14 @@ PUT       /api/posts/:id            controllers.PostsController.update(id: Int)
 DELETE    /api/posts/:id            controllers.PostsController.delete(id: Int)
 
 ##GET     /api/posts/:post_id/comments
-##POST    /api/posts/comment
+##POST    /api/posts/:post_id/comment
 ##PUT     /api/posts/:post_id/:comment_id
 ##DELETE  /api/posts/:post_id/:comment_id
 
-##GET     /api/posts/:post_id/comment/:id/comments
-##POST    /api/posts/:post_id/comment/:id/comment
-##PUT     /api/posts/:post_id/comment/:id/comment/:id
-##DELETE  /api/posts/:post_id/comment/:id/comment/:id
+##GET     /api/posts/:post_id/comment/:comment_id/comments
+##POST    /api/posts/:post_id/comment/:comment_id/comment
+##PUT     /api/posts/:post_id/comment/:comment_id/comment/:comment_id
+##DELETE  /api/posts/:post_id/comment/:comment_id/comment/:comment_id
 
 ##GET     /api/users/:id/schedules
 ##POST    /api/schedules

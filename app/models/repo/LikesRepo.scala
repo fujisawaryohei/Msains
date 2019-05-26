@@ -21,6 +21,12 @@ class LikesRepo @Inject() (
 
     val query = TableQuery[LikesTable]
 
+    def getPostLikesCount(post_id: Int): Future[Seq[Like]] =
+      db.run(query.filter(_.id === post_id).result)
+
+    def getCommentLikesCount(comment_id: Int): Future[Seq[Like]] =
+      db.run(query.filter(_.id === comment_id).result)
+
     class LikesTable(tag: Tag) extends Table[Like](tag, "LIKES"){
       def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
       def userID = column[UUID]("USER_ID")

@@ -13,5 +13,5 @@ case class Like(
 object Like {
   val tupled = (apply _).tupled
 
-  implicit val writes: Writes[Post] = Json.writes[Post]
+  implicit val writes: Writes[Like] = Json.writes[Like]
 }

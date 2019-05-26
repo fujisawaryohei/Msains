@@ -1,8 +1,17 @@
 package models.domain
+import play.api.libs.json.Json
+import play.api.libs.json.JsValue
+import play.api.libs.json.Writes
 import java.util.UUID
 
 case class Like(
+  id: Option[Int],
   userID: UUID,
-  postID: Int,
-  commentID: Int
-)
+  postID: Option[Int],
+  commentID: Option[Int])
+
+object Like {
+  val tupled = (apply _).tupled
+
+  implicit val writes: Writes[Post] = Json.writes[Post]
+}

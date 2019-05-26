@@ -17,7 +17,7 @@ class CommentsRepo @Inject() (
   import dbConfig._
   import profile.api._
 
-  class CommentTable(tag: Tag) extends Table[Comment](tag,"COMMENTS") {
+  class CommentsTable(tag: Tag) extends Table[Comment](tag,"COMMENTS") {
     def id = column[Int]("ID", O.PrimaryKey)
     def userID = column[UUID]("USER_ID")
     def postID = column[Int]("POST_ID")

@@ -27,6 +27,8 @@ class LikesRepo @Inject() (
     def getCommentLikesCount(comment_id: Int): Future[Seq[Like]] =
       db.run(query.filter(_.id === comment_id).result)
 
+    def likeAddComment(like: Like): Future[Int] = db.run(query += like)
+
     class LikesTable(tag: Tag) extends Table[Like](tag, "LIKES"){
       def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
       def userID = column[UUID]("USER_ID")

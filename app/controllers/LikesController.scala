@@ -20,13 +20,22 @@ class LikesController @Inject()(
   extends AbstractController(components)
   with play.api.i18n.I18nSupport {
 
-    val likesPamamsMapping = Form(
-      mapping(
-        "id" -> optional(number),
-        "userID" -> uuid,
-        "postID" -> optional(number),
-        "commentID" -> optional(number)
-      )(Like.apply)(Like.unapply)
+    val likesPostParamstuple = tuple(
+      "userID" -> uuid,
+      "commentID" -> optional(number)
+    )
+
+    val likesCommentParamstuple = tuple(
+      "userID" -> uuid,
+      "postID" -> optional(number)
+    )
+
+    val likesPostParamsMapping = Form(
+      "params" -> likesPostParamstuple
+    )
+
+    val likesCommentParamsMapping = Form(
+      "params" -> likesCommentParamstuple
     )
 
     def getPostLikesCount(id: Int) = Action.async {
@@ -37,12 +46,23 @@ class LikesController @Inject()(
       likesRepo.getCommentLikesCount(id).map(n => Ok(Json.toJson(n)))
     }
 
-    def createLike(id: Int) = Action.async { implicit request =>
-      likesPamamsMapping.bindFromRequest.fold(
-        error =>
-          Future.successful(BadRequest(error.errorsAsJson)),
-        value =>
-          likesRepo.likeAddComment(value).map(n => if(n == 1) Ok else InternalServerError)
+    def createPostLike(id: Option[Int]) = Action.async { implicit request =>
+      likesPostParamsMapping.bindFromRequest.fold(
+        error => Future.successful(BadRequest(error.errorsAsJson)),
+        { case (params) =>
+          likesRepo.likeAdd(Like.postFromForm(id,params))
+                   .map(n => if(n == 1) Ok else InternalServerError)
+        }
+      )
+    }
+
+    def createCommentLike(id: Option[Int]) = Action.async { implicit request =>
+      likesCommentParamsMapping.bindFromRequest.fold(
+        error => Future.successful(BadRequest(error.errorsAsJson)),
+        { case (params) =>
+          likesRepo.likeAdd(Like.commentFromForm(id,params))
+                   .map(n => if(n == 1) Ok else InternalServerError)
+        }
       )
     }
   }

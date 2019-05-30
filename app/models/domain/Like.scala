@@ -14,4 +14,10 @@ object Like {
   val tupled = (apply _).tupled
 
   implicit val writes: Writes[Like] = Json.writes[Like]
+
+  def postFromForm(post_id: Option[Int], params:(UUID, Option[Int]))
+    = apply(None, params._1, post_id, params._2)
+
+  def commentFromForm(comment_id: Option[Int], params:(UUID, Option[Int]))
+    = apply(None, params._1, params._2 , comment_id)
 }

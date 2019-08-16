@@ -8,7 +8,7 @@ import models.domain.Comment
 
 @Singleton
 class CommentRepliesRepo @Inject() (
-    val commetsRepo: CommentRepo,
+    val commetsRepo: CommentsRepo,
     dbConfigProvider: play.api.db.slick.DatabaseConfigProvider)(
     implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[slick.jdbc.JdbcProfile]

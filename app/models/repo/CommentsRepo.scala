@@ -7,7 +7,7 @@ import scala.concurrent.{ Future, ExecutionContext }
 import models.domain.Comment
 
 @Singleton
-class CommentRepo @Inject() (
+class CommentsRepo @Inject() (
     val usersRepo: UsersRepo,
     val postsRepo: PostsRepo,
     dbConfigProvider: play.api.db.slick.DatabaseConfigProvider)(

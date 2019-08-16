@@ -16,12 +16,42 @@ class PostsRepo @Inject() (
   import dbConfig._
   import profile.api._
 
+  private val query = TableQuery[PostsTable]
+
+  def getThreads: Future[Seq[Post]] =
+    db.run(query.filter(_.postType === "Thread").result)
+
+  def getTimelines: Future[Seq[Post]] =
+    db.run(query.filter(_.postType === "Timeline").result)
+
+  def getUserTimelines(user_id: UUID): Future[Seq[Post]] =
+    db.run(query.filter(_.userID === user_id).filter(_.postType === "Timeline").result)
+
+  def getUserThreads(user_id: UUID): Future[Seq[Post]] =
+    db.run(query.filter(_.userID === user_id).filter(_.postType === "Threads").result)
+
+  def getDetailResult(id: Int): Future[Post] =
+    db.run(query.filter(_.id === id).result.head)
+
+  def add(post: Post): Future[Int] =
+    db.run(query += post)
+
+  def update(userID: UUID, id: Int, params: (String, String, String)): Future[Int] = db.run {
+    query
+      .filter(r => r.userID === userID && r.id === id)
+      .map(r => (r.title, r.content, r.filename))
+      .update(params)
+  }
+
+  def delete(userID: UUID, id: Int): Future[Int] =
+    db.run(query.filter(r => r.userID === userID && r.id === id).delete)
+
   class PostsTable(tag: Tag) extends Table[Post](tag,"POSTS") {
     def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
     def userID = column[UUID]("USER_ID")
     def title = column[String]("TITLE")
     def content = column[String]("CONTENT")
-    def imageURL = column[String]("IMAGE_URL")
+    def filename = column[String]("FILENAME")
     def postType = column[String]("TYPE")
     def createdAt = column[Instant]("CREATED_AT")
 
@@ -30,7 +60,7 @@ class PostsRepo @Inject() (
         userID,
         title,
         content,
-        imageURL,
+        filename,
         postType,
         createdAt) <> (Post.tupled, Post.unapply)
 

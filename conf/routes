@@ -31,18 +31,19 @@ POST      /api/posts                controllers.PostsController.add
 PUT       /api/posts/:id            controllers.PostsController.update(id: Int)
 DELETE    /api/posts/:id            controllers.PostsController.delete(id: Int)
 
-##GET     /api/posts/:post_id/comments
-##POST    /api/posts/comment
-##PUT     /api/posts/:post_id/:comment_id
-##DELETE  /api/posts/:post_id/:comment_id
+GET     /api/posts/:post_id/comments     controllers.CommentsController.getComments(post_id: Int)
+POST    /api/posts/:post_id/comment      controllers.CommentsController.commentCreate(post_id: Int)
+PUT     /api/posts/:comment_id           controllers.CommentsController.commentUpdate(comment_id: Int)
+DELETE  /api/posts/:comment_id           controllers.CommentsController.commentDelete(comment_id: Int)
 
-##GET     /api/posts/:post_id/comment/:id/comments
-##POST    /api/posts/:post_id/comment/:id/comment
-##PUT     /api/posts/:post_id/comment/:id/comment/:id
-##DELETE  /api/posts/:post_id/comment/:id/comment/:id
+##GET     /api/posts/:post_id/comment/:comment_id/comments
+##POST    /api/posts/:post_id/comment/:comment_id/comment
+##PUT     /api/posts/:post_id/comment/:comment_id/comment/:comment_id
+##DELETE  /api/posts/:post_id/comment/:comment_id/comment/:comment_id
 
 ##GET     /api/users/:id/schedules
 ##POST    /api/schedules
 ##PUT     /api/schedule/:id
 ##DELETE  /api/schedule/:id
+
 

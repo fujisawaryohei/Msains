@@ -31,16 +31,16 @@ DELETE    /api/posts/:id            controllers.PostsController.delete(id: Int)
 ##POST    /api/posts/:id/comment/:id/like
 ##DELETE  /api/posts/:id/comment/:id
 
-GET     /api/posts/:id/likes  controllers.LikesController.getPostLikesCount(id: Int)
-POST    /api/posts/:id/likes  controllers.LikesController.createPostLike(id: Int)
-DELETE  /api/posts/:id/likes  controllers.LikesController.deletePostLike(id: Int)
+##GET     /api/posts/:id/likes  controllers.LikesController.getPostLikesCount(id: Int)
+##POST    /api/posts/:id/likes  controllers.LikesController.createPostLike(id: Int)
+##DELETE  /api/posts/:id/likes  controllers.LikesController.deletePostLike(id: Int)
 
-GET     /api/comment/:id/likes  controllers.LikesController.getCommentLikesCount(id: Int)
-POST    /api/comment/:id/likes  controllers.LikesController.createCommentLike(id: Int)
-DELETE  /api/comment/:id/likes  controllers.LikesController.deleteCommentLike(id: Int)
+##GET     /api/comment/:id/likes  controllers.LikesController.getCommentLikesCount(id: Int)
+##POST    /api/comment/:id/likes  controllers.LikesController.createCommentLike(id: Int)
+##DELETE  /api/comment/:id/likes  controllers.LikesController.deleteCommentLike(id: Int)
 
 GET     /api/posts/:post_id/comments     controllers.CommentsController.getComments(post_id: Int)
-POST    /api/posts/:post_id/comment      controllers.CommentsController.commentCreate(post_id: Int)
+POST    /api/posts/comment      controllers.CommentsController.commentCreate
 PUT     /api/posts/:comment_id           controllers.CommentsController.commentUpdate(comment_id: Int)
 DELETE  /api/posts/:comment_id           controllers.CommentsController.commentDelete(comment_id: Int)
 

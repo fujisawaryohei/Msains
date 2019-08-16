@@ -31,7 +31,9 @@ class CommentsController @Inject()(
       "params" -> commentParamstuple
     )
 
-    val commentUpdateParamsMapping = Form(commentParamstuple)
+    val commentUpdateParamsMapping = Form(
+      "contentParam" -> commentParamstuple
+    )
 
     def getComments(post_id: Int) = Action.async {
       commentsRepo.getComments(post_id).map(n => Ok(Json.toJson(n)))

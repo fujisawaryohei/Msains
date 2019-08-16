@@ -14,11 +14,13 @@ POST    /api/users/signout                     controllers.AuthenticationControl
 ##POST    /api/users/:id/following
 ##DELETE  /api/users/:id/following
 
-##GET     /api/posts/:id/likes
-##POST    /api/posts/:id/comment/:id
-##GET     /api/posts/:id/comment/:id/likes
-##PUT     /api/posts/:id/comment/:id
-##DELETE  /api/posts/:id/comment/:id
+GET     /api/posts/:id/likes  controllers.LikesController.getPostLikesCount(id: Int)
+POST    /api/posts/:id/likes  controllers.LikesController.createPostLike(id: Int)
+DELETE  /api/posts/:id/likes  controllers.LikesController.deletePostLike(id: Int)
+
+GET     /api/comment/:id/likes  controllers.LikesController.getCommentLikesCount(id: Int)
+POST    /api/comment/:id/likes  controllers.LikesController.createCommentLike(id: Int)
+DELETE  /api/comment/:id/likes  controllers.LikesController.deleteCommentLike(id: Int)
 
 GET       /api/timelines            controllers.PostsController.getTimelines
 GET       /api/threads              controllers.PostsController.getThreads
@@ -43,3 +45,4 @@ DELETE    /api/posts/:id            controllers.PostsController.delete(id: Int)
 ##POST    /api/schedules
 ##PUT     /api/schedule/:id
 ##DELETE  /api/schedule/:id
+

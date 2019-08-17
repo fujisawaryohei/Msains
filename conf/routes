@@ -23,13 +23,13 @@ DELETE    /api/posts/:id            controllers.PostsController.delete(id: Int)
 ##POST    /api/users/:id/following
 ##DELETE  /api/users/:id/following
 
-##GET     /api/posts/:id/likes
-##POST    /api/posts/:id/like
-##DELETE  /api/posts/:id/likes
+##GET     /api/posts/:id/likes  controllers.LikesController.getPostLikesCount(id: Int)
+##POST    /api/posts/:id/likes  controllers.LikesController.createPostLike(id: Int)
+##DELETE  /api/posts/:id/likes  controllers.LikesController.deletePostLike(id: Int)
 
-##GET     /api/posts/:id/comment/:id/likes
-##POST    /api/posts/:id/comment/:id/like
-##DELETE  /api/posts/:id/comment/:id
+##GET     /api/comment/:id/likes  controllers.LikesController.getCommentLikesCount(id: Int)
+##POST    /api/comment/:id/likes  controllers.LikesController.createCommentLike(id: Int)
+##DELETE  /api/comment/:id/likes  controllers.LikesController.deleteCommentLike(id: Int)
 
 ##GET     /api/posts/:id/likes  controllers.LikesController.getPostLikesCount(id: Int)
 ##POST    /api/posts/:id/likes  controllers.LikesController.createPostLike(id: Int)

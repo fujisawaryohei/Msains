@@ -4,60 +4,61 @@ import java.util.UUID
 import java.time.Instant
 import javax.inject.{ Inject, Singleton }
 import scala.concurrent.{ Future, ExecutionContext }
-import models.domain.Like
-import java.util.UUID
+import models.domain.Comment
 
 @Singleton
-class LikesRepo @Inject() (
-  val usersRepo: UsersRepo,
-  val postsRepo: PostsRepo,
-  val commentsRepo: CommentsRepo,
-  dbConfigProvider: play.api.db.slick.DatabaseConfigProvider)(
-  implicit ec: ExecutionContext) {
-    val dbConfig = dbConfigProvider.get[slick.jdbc.JdbcProfile]
+class CommentsRepo @Inject() (
+    val usersRepo: UsersRepo,
+    val postsRepo: PostsRepo,
+    dbConfigProvider: play.api.db.slick.DatabaseConfigProvider)(
+    implicit ec: ExecutionContext) {
+  val dbConfig = dbConfigProvider.get[slick.jdbc.JdbcProfile]
 
-    import dbConfig._
-    import profile.api._
+  import dbConfig._
+  import profile.api._
 
-    val query = TableQuery[LikesTable]
+  private val query = TableQuery[CommentsTable]
 
-    def getPostLikesCount(post_id: Int): Future[Seq[Like]] =
-      db.run(query.filter(_.id === post_id).result)
-
-    def getCommentLikesCount(comment_id: Int): Future[Seq[Like]] =
-      db.run(query.filter(_.id === comment_id).result)
-
-    def likeAdd(like: Like): Future[Int] = db.run(query += like)
-
-    def likePostDelete(post_id: Int): Future[Int] =
-      db.run(query.filter(_.id === post_id).delete)
-
-    def likeCommentDelete(comment_id: Int): Future[Int] =
-      db.run(query.filter(_.id === comment_id).delete)
-
-    class LikesTable(tag: Tag) extends Table[Like](tag, "LIKES"){
-      def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
-      def userID = column[UUID]("USER_ID")
-      def postID = column[Int]("POST_ID")
-      def commentID = column[Int]("COMMENT_ID")
-
-      def * = (
-        id.?,
-        userID,
-        postID.?,
-        commentID.?) <> (Like.tupled, Like.unapply)
-
-      def user = foreignKey("USER_ID", userID, TableQuery[usersRepo.UsersTable])(
-        _.id,
-        onUpdate = ForeignKeyAction.Cascade,
-        onDelete = ForeignKeyAction.Cascade)
-      def post = foreignKey("POST_ID", postID, TableQuery[postsRepo.PostsTable])(
-        _.id,
-        onUpdate = ForeignKeyAction.Cascade,
-        onDelete = ForeignKeyAction.Cascade)
-      def comment = foreignKey("COMMENT_ID", commentID, TableQuery[commentsRepo.CommentsTable])(
-        _.id,
-        onUpdate = ForeignKeyAction.Cascade,
-        onDelete = ForeignKeyAction.Cascade)
-    }
+  def getComments(post_id: Int): Future[Seq[Comment]] = db.run {
+    query.filter(_.id === post_id).result
   }
+
+  def createComment(comment: Comment): Future[Int] = db.run(query += comment)
+
+  def updateComment(comment_id: Int, content: (UUID, Int, String)): Future[Int] = db.run {
+    query.filter(_.id === comment_id)
+         .map(r => (r.userID, r.postID, r.content))
+         .update(content)
+  }
+
+  def deleteComment(comment_id: Int): Future[Int] = db.run {
+    query.filter(_.id === comment_id).delete
+  }
+
+  class CommentsTable(tag: Tag) extends Table[Comment](tag,"COMMENTS") {
+    def id = column[Int]("ID", O.PrimaryKey)
+    def userID = column[UUID]("USER_ID")
+    def postID = column[Int]("POST_ID")
+    def content = column[String]("CONTENT")
+    def likeFlag = column[Boolean]("LIKE_FLAG")
+    def createdAt = column[Instant]("CREATED_AT")
+
+    def * = (
+      id.?,
+      userID,
+      postID,
+      content,
+      likeFlag.?,
+      createdAt) <> (Comment.tupled, Comment.unapply)
+
+    def user = foreignKey("USERS_FK", userID, TableQuery[usersRepo.UsersTable])(
+      _.id,
+      onUpdate = ForeignKeyAction.Cascade,
+      onDelete = ForeignKeyAction.Cascade)
+
+    def post = foreignKey("POSTS_FK", postID, TableQuery[postsRepo.PostsTable])(
+      _.id,
+      onUpdate = ForeignKeyAction.Cascade,
+      onDelete = ForeignKeyAction.Cascade)
+  }
+}

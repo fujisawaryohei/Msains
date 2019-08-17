@@ -29,6 +29,12 @@ class LikesRepo @Inject() (
 
     def likeAdd(like: Like): Future[Int] = db.run(query += like)
 
+    def likePostDelete(post_id: Int): Future[Int] =
+      db.run(query.filter(_.id === post_id).delete)
+
+    def likeCommentDelete(comment_id: Int): Future[Int] =
+      db.run(query.filter(_.id === comment_id).delete)
+
     class LikesTable(tag: Tag) extends Table[Like](tag, "LIKES"){
       def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
       def userID = column[UUID]("USER_ID")

@@ -46,7 +46,7 @@ class LikesController @Inject()(
       likesRepo.getCommentLikesCount(id).map(n => Ok(Json.toJson(n)))
     }
 
-    def createPostLike(id: Option[Int]) = Action.async { implicit request =>
+    def createPostLike(id: Option[Int]) = userAction.async { implicit request =>
       likesPostParamsMapping.bindFromRequest.fold(
         error => Future.successful(BadRequest(error.errorsAsJson)),
         { case (params) =>
@@ -56,7 +56,7 @@ class LikesController @Inject()(
       )
     }
 
-    def createCommentLike(id: Option[Int]) = Action.async { implicit request =>
+    def createCommentLike(id: Option[Int]) = userAction.async { implicit request =>
       likesCommentParamsMapping.bindFromRequest.fold(
         error => Future.successful(BadRequest(error.errorsAsJson)),
         { case (params) =>
@@ -64,5 +64,13 @@ class LikesController @Inject()(
                    .map(n => if(n == 1) Ok else InternalServerError)
         }
       )
+    }
+
+    def deletePostLike(post_id: Int) = userAction.async { implicit request =>
+      likesRepo.likePostDelete(post_id).map(n => if(n == 1) Ok else InternalServerError)
+    }
+
+    def deleteCommentLike(comment_id: Int) = userAction.async { implicit request =>
+      likesRepo.likeCommentDelete(comment_id).map(n => if(n == 1) Ok else InternalServerError)
     }
   }

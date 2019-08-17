@@ -11,7 +11,7 @@ case class Like(
   commentID: Option[Int])
 
 object Like {
-  val tupled = (apply _).tupled
+  val tupled = (Like.apply _).tupled //tuple convert to case class→db insert with tuple
 
   implicit val writes: Writes[Like] = Json.writes[Like]
 

@@ -8,7 +8,7 @@ import models.domain.User
 
 @Singleton
 class UserAction @Inject() (
-    val parser: BodyParser[AnyContent],
+    val parser: BodyParsers.Default,
     val userRepo: models.repo.UsersRepo)(
     implicit
     val executionContext: ExecutionContext)

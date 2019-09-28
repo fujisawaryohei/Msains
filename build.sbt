@@ -12,5 +12,5 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick-evolutions" % "4.0.0",
   "com.ejisan" %% "kuro-otp" % "0.0.1-SNAPSHOT"
 )
-
+libraryDependencies += guice
 resolvers += "EJI" at "https://ejisan.github.io/repo/"

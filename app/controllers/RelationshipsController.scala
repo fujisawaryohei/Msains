@@ -26,21 +26,29 @@ class RelationshipsController @Inject()(
       "loginUserID" -> uuid
     )
 
-    def following(user_id: UUID) = userAction.async { implicit request => 
+    def getFollowingsCount(user_id: UUID) = Action.async { implicit request =>
+      relationshipsRepo.getFollowingsCount(user_id).map(n => Ok(Json.toJson(n)))
+    }
+
+    def getFollwersCount(user_id: UUID) = Action.async { implicit request =>
+      relationshipsRepo.getFollowersCount(user_id).map(n => Ok(Json.toJson(n)))
+    }
+
+    def following(following_id: UUID) = userAction.async { implicit request => 
       relationParamsMapping.bindFromRequest.fold(
         error => Future.successful(BadRequest(error.errorsAsJson)),
         (loginUserID) => {
-          relationshipsRepo.add(Relationship.fromForm(user_id, loginUserID))
+          relationshipsRepo.add(Relationship.fromForm(following_id, loginUserID))
           .map(n => if(n == 1) Ok("following") else InternalServerError)
         }
       )
     }
 
-    def unfollowing(user_id: UUID) = userAction.async { implicit request =>
+    def unfollowing(follower_id: UUID) = userAction.async { implicit request =>
       relationParamsMapping.bindFromRequest.fold(
         error => Future.successful(BadRequest(error.errorsAsJson)),
         (loginUserID) => {
-          relationshipsRepo.delete(user_id, loginUserID)
+          relationshipsRepo.delete(follower_id, loginUserID)
           .map(n => if (n == 1) Ok("unfollowing") else InternalServerError)
         }
       )

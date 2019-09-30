@@ -18,6 +18,10 @@ class RelationshipsRepo @Inject() (
 
   private val query = TableQuery[RelationshipsTable]
 
+  def getFollowingsCount(user_id: UUID): Future[Seq[Relationship]] = db.run { query.filter(_.followingID === user_id).result }
+
+  def getFollowersCount(user_id: UUID): Future[Seq[Relationship]] = db.run{ query.filter(_.followerID === user_id).result }
+
   def add(entity: Relationship): Future[Int] = db.run { query += entity }
 
   def delete(followingID: UUID, followerID: UUID): Future[Int] = db.run {

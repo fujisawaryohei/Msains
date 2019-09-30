@@ -53,3 +53,8 @@ DELETE  /api/posts/:comment_id           controllers.CommentsController.commentD
 ##POST    /api/schedules
 ##PUT     /api/schedule/:id
 ##DELETE  /api/schedule/:id
+
+
+
+
+

@@ -16,9 +16,17 @@ class RelationshipsRepo @Inject() (
   import dbConfig._
   import profile.api._
 
+  private val query = TableQuery[RelationshipsTable]
+
+  def add(entity: Relationship): Future[Int] = db.run { query += entity }
+
+  def delete(followingID: UUID, followerID: UUID): Future[Int] = db.run {
+      query.filter(n => n.followingID === followingID && n.followerID === followerID).delete
+    }
+
   class RelationshipsTable(tag: Tag) extends Table[Relationship](tag,"RELATIONSHIPS") {
-    def followingID = column[UUID]("FOLLOWING_ID")
-    def followerID = column[UUID]("FOLLOWER_ID")
+    def followingID = column[UUID]("FOLLOWING_ID") // followした対象のUserID(対象のUserID)
+    def followerID = column[UUID]("FOLLOWER_ID") // followされたuserのUserID(ログインしているuserのUserID))
     def createdAt = column[Instant]("CREATED_AT")
 
     def following = foreignKey("FOLLOWING_FK", followingID, TableQuery[usersRepo.UsersTable])(

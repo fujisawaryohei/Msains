@@ -18,10 +18,10 @@ POST      /api/posts                controllers.PostsController.add
 PUT       /api/posts/:id            controllers.PostsController.update(id: Int)
 DELETE    /api/posts/:id            controllers.PostsController.delete(id: Int)
 
-##GET     /api/users/:id/followings
-##GET     /api/users/:id/followers
-##POST    /api/users/:id/following
-##DELETE  /api/users/:id/following
+GET     /api/users/:user_id/followings   controllers.RelationshipsController.getFollowingsCount(user_id: java.util.UUID)
+GET     /api/users/:user_id/followers    controllers.RelationshipsController.getFollwersCount(user_id: java.util.UUID)
+POST    /api/users/:following_id/following    controllers.RelationshipsController.following(following_id: java.util.UUID)
+DELETE  /api/users/:follower_id/following    controllers.RelationshipsController.unfollowing(follower_id: java.util.UUID)
 
 ##GET     /api/posts/:id/likes  controllers.LikesController.getPostLikesCount(id: Int)
 ##POST    /api/posts/:id/likes  controllers.LikesController.createPostLike(id: Int)

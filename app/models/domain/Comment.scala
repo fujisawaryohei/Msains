@@ -10,7 +10,6 @@ case class Comment(
     userID: java.util.UUID,
     postID: Int,
     content: String,
-    likeFlag: Option[Boolean],
     createdAt: java.time.Instant)
 
 object Comment {
@@ -18,5 +17,5 @@ object Comment {
 
   implicit val writes: Writes[Comment] = Json.writes[Comment]
 
-  def fromForm(params: (UUID, Int, String)) = apply(None, params._1, params._2, params._3, None, Instant.now)
+  def fromForm(params: (UUID, Int, String)) = apply(None, params._1, params._2, params._3, Instant.now)
 }

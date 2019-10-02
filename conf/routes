@@ -23,21 +23,13 @@ GET     /api/users/:user_id/followers    controllers.RelationshipsController.get
 POST    /api/users/:following_id/following    controllers.RelationshipsController.following(following_id: java.util.UUID)
 DELETE  /api/users/:follower_id/following    controllers.RelationshipsController.unfollowing(follower_id: java.util.UUID)
 
-##GET     /api/posts/:id/likes  controllers.LikesController.getPostLikesCount(id: Int)
-##POST    /api/posts/:id/likes  controllers.LikesController.createPostLike(id: Int)
-##DELETE  /api/posts/:id/likes  controllers.LikesController.deletePostLike(id: Int)
+GET     /api/posts/:post_id/likes  controllers.LikesController.getPostLikesCount(post_id: Int)
+POST    /api/posts/:post_id/likes  controllers.LikesController.createPostLike(post_id: Int)
+DELETE  /api/posts/:post_id/likes  controllers.LikesController.deletePostLike(post_id: Int)
 
-##GET     /api/comment/:id/likes  controllers.LikesController.getCommentLikesCount(id: Int)
-##POST    /api/comment/:id/likes  controllers.LikesController.createCommentLike(id: Int)
-##DELETE  /api/comment/:id/likes  controllers.LikesController.deleteCommentLike(id: Int)
-
-##GET     /api/posts/:id/likes  controllers.LikesController.getPostLikesCount(id: Int)
-##POST    /api/posts/:id/likes  controllers.LikesController.createPostLike(id: Int)
-##DELETE  /api/posts/:id/likes  controllers.LikesController.deletePostLike(id: Int)
-
-##GET     /api/comment/:id/likes  controllers.LikesController.getCommentLikesCount(id: Int)
-##POST    /api/comment/:id/likes  controllers.LikesController.createCommentLike(id: Int)
-##DELETE  /api/comment/:id/likes  controllers.LikesController.deleteCommentLike(id: Int)
+GET     /api/comment/:comment_id/likes  controllers.LikesController.getCommentLikesCount(comment_id: Int)
+POST    /api/comment/:comment_id/likes  controllers.LikesController.createCommentLike(comment_id: Int)
+DELETE  /api/comment/:comment_id/likes  controllers.LikesController.deleteCommentLike(comment_id: Int)
 
 GET     /api/posts/:post_id/comments     controllers.CommentsController.getComments(post_id: Int)
 POST    /api/posts/comment      controllers.CommentsController.commentCreate

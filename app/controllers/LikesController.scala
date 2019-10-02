@@ -20,47 +20,33 @@ class LikesController @Inject()(
   extends AbstractController(components)
   with play.api.i18n.I18nSupport {
 
-    val likesPostParamstuple = tuple(
-      "userID" -> uuid,
-      "commentID" -> optional(number)
+    val likesForm = Form(
+      "userID" -> uuid
     )
 
-    val likesCommentParamstuple = tuple(
-      "userID" -> uuid,
-      "postID" -> optional(number)
-    )
-
-    val likesPostParamsMapping = Form(
-      "params" -> likesPostParamstuple
-    )
-
-    val likesCommentParamsMapping = Form(
-      "params" -> likesCommentParamstuple
-    )
-
-    def getPostLikesCount(id: Int) = Action.async {
-      likesRepo.getPostLikesCount(id).map(n => Ok(Json.toJson(n)))
+    def getPostLikesCount(post_id: Int) = Action.async {
+      likesRepo.getPostLikesCount(post_id).map(n => Ok(Json.toJson(n)))
     }
 
-    def getCommentLikesCount(id: Int) = Action.async {
-      likesRepo.getCommentLikesCount(id).map(n => Ok(Json.toJson(n)))
+    def getCommentLikesCount(comment_id: Int) = Action.async {
+      likesRepo.getCommentLikesCount(comment_id).map(n => Ok(Json.toJson(n)))
     }
 
-    def createPostLike(id: Option[Int]) = userAction.async { implicit request =>
-      likesPostParamsMapping.bindFromRequest.fold(
+    def createPostLike(post_id: Int) = userAction.async { implicit request =>
+      likesForm.bindFromRequest.fold(
         error => Future.successful(BadRequest(error.errorsAsJson)),
-        { case (params) =>
-          likesRepo.likeAdd(Like.postFromForm(id,params))
+        { case (userID) =>
+          likesRepo.likeAdd(Like.postFromForm(userID, Option(post_id)))
                    .map(n => if(n == 1) Ok else InternalServerError)
         }
       )
     }
 
-    def createCommentLike(id: Option[Int]) = userAction.async { implicit request =>
-      likesCommentParamsMapping.bindFromRequest.fold(
+    def createCommentLike(comment_id: Int) = userAction.async { implicit request =>
+      likesForm.bindFromRequest.fold(
         error => Future.successful(BadRequest(error.errorsAsJson)),
-        { case (params) =>
-          likesRepo.likeAdd(Like.commentFromForm(id,params))
+        { case (userID) =>
+          likesRepo.likeAdd(Like.commentFromForm(userID, Option(comment_id)))
                    .map(n => if(n == 1) Ok else InternalServerError)
         }
       )

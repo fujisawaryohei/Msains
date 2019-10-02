@@ -15,9 +15,9 @@ object Like {
 
   implicit val writes: Writes[Like] = Json.writes[Like]
 
-  def postFromForm(post_id: Option[Int], params:(UUID, Option[Int]))
-    = apply(None, params._1, post_id, params._2)
+  def postFromForm(user_id: UUID, post_id: Option[Int])
+    = apply(None, user_id, post_id, None)
 
-  def commentFromForm(comment_id: Option[Int], params:(UUID, Option[Int]))
-    = apply(None, params._1, params._2 , comment_id)
+  def commentFromForm(user_id: UUID, comment_id: Option[Int])
+    = apply(None, user_id, None, comment_id)
 }

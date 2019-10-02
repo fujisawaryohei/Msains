@@ -22,7 +22,7 @@ class RelationshipsController @Inject()(
   extends AbstractController(components)
   with play.api.i18n.I18nSupport {
 
-    def relationParamsMapping = Form(
+    val relationParamsMapping = Form(
       "loginUserID" -> uuid
     )
 

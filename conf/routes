@@ -36,10 +36,10 @@ POST    /api/posts/comment      controllers.CommentsController.commentCreate
 PUT     /api/posts/:comment_id           controllers.CommentsController.commentUpdate(comment_id: Int)
 DELETE  /api/posts/:comment_id           controllers.CommentsController.commentDelete(comment_id: Int)
 
-##GET     /api/posts/:post_id/comment/:comment_id/comments
-##POST    /api/posts/:post_id/comment/:comment_id/comment
-##PUT     /api/posts/:post_id/comment/:comment_id/comment/:comment_id
-##DELETE  /api/posts/:post_id/comment/:comment_id/comment/:comment_id
+##GET     /api/posts/comments/:comment_id/commentrep
+##POST    /api/posts/comments/:comment_id/commentrep
+##PUT     /api/posts/comments/commentrep/:commentrep_id
+##DELETE  /api/posts/comments/commentrep/:commentrep_id
 
 ##GET     /api/users/:id/schedules
 ##POST    /api/schedules
